@@ -1,9 +1,9 @@
 import { useState } from "react";
-import { MovieCard } from "../movie-card/movie-card";
-import { MovieView } from "../movie-view/movie-view";
+import { MovieCard } from "../movie-card/movie-card.jsx";
+import { MovieView } from "../movie-view/movie-view.jsx";
 
 export const MainView = () => {
-    const [movies] = useState([
+    const [movies, selectedMovies] = useState([
         {
             id: "ObjectId('648a25b28d925836d83d5c21')",
             title: "Step Brothers",
@@ -32,7 +32,7 @@ export const MainView = () => {
 
     const [selectedMovie, setSelectedMovie] = useState(null);
 
-    if (selectedMovie) {
+    if (selectedMovies) {
         return (
             <MovieView movie={selectedMovie} onBackClick={() => setSelectedMovie(null)} />
         ); 
