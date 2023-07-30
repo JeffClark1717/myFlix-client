@@ -1,43 +1,30 @@
 import { useState, useEffect } from 'react';
 import { MovieCard } from "../movie-card/movie-card.jsx";
 import { MovieView } from "../movie-view/movie-view.jsx";
+//  import { LoginView } from "../login-view/login-view";
+
 
 export const MainView = () => {
     const [movies, setMovies] = useState([]);
-
     const [selectedMovie, setSelectedMovie] = useState(null);
+    const [user, setUser] = useState(null);
 
   useEffect(() => {
     fetch('https://notflix1717-51672d8e0ed0.herokuapp.com/movies')
       .then((response) => response.json())
       .then((data) => {
         console.log(data);
-        const moviesFromApi = data.map((movie) => {
-          return {
-            _id: movie.id,
-            title: movie.title,
-            image: movie.image,
-            description: movie.description,
-            genre: {
-              name: movie.genre.name
-            },
-            director: {
-              name: movie.director.name
-            },
-            featured: movie.featured.toString()
-          };
-        });
-        setMovies(moviesFromApi);
-      });
+        setMovies(data);
+        
+      }).catch(e => console.log(e));
   }, []);
-
 
     if (selectedMovie) {
         return (
             <MovieView movie={selectedMovie} onBackClick={() => setSelectedMovie(null)} />
         ); 
     }
-
+console.log(movies);
     if (movies.length === 0) {
         return <div>This list is empty!</div>;
     }
@@ -46,7 +33,7 @@ export const MainView = () => {
         <div>
             {movies.map((movie) => (
                 <MovieCard
-                    key={movie.title}
+                    key={movie._id}
                     movie={movie}
                     onMovieClick={(newSelectedMovie) => {
                         setSelectedMovie(newSelectedMovie);
