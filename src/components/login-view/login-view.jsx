@@ -1,22 +1,18 @@
 import { useState } from "react";
 
-export const SignupView = () => {
+export const LoginView = ({ onLoggedIn }) => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
-  const [email, setEmail] = useState("");
-  const [birthday, setBirthday] = useState("");
 
   const handleSubmit = (event) => {
     event.preventDefault();
 
     const data = {
-      username: username,
-      password: password,
-      email: email,
-      birthday: birthday
+      Username: username,
+      Password: password,
     };
 
-    fetch("https://notflix1717-51672d8e0ed0.herokuapp.com/users", {
+    fetch("https://notflix1717-51672d8e0ed0.herokuapp.com/login", {
       method: "POST",
       body: JSON.stringify(data),
       headers: {
@@ -25,16 +21,16 @@ export const SignupView = () => {
     })
     .then((response) => {
       if (response.ok) {
-        alert("Signup successful");
-        window.location.reload();
+        return response.json();
+        
       } else {
-        return response.json(); 
+        alert ("login failed");
       }
     })
     .then((data) => {
       if (data) {
-        console.error("Signup failed:", data); 
-        alert("Signup failed once again");
+        console.log(data)
+        onLoggedIn (data.user.Username, data.token)
       }
     })
     .catch((error) => {
@@ -60,24 +56,6 @@ export const SignupView = () => {
           type="password"
           value={password}
           onChange={(e) => setPassword(e.target.value)}
-          required
-        />
-      </label>
-      <label>
-        Email:
-        <input
-          type="email"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-          required
-        />
-      </label>
-      <label>
-        Birthday:
-        <input
-          type="date"
-          value={birthday}
-          onChange={(e) => setBirthday(e.target.value)}
           required
         />
       </label>
