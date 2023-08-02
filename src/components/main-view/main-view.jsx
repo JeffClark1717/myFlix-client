@@ -20,7 +20,7 @@ export const MainView = () => {
 })
       .then((response) => response.json())
       .then((data) => {
-        console.log("movies from api:", data)
+        console.log(data)
         const moviesFromApi = data.map((movie) => {
           return {
             _id: movie._id,
@@ -72,15 +72,11 @@ export const MainView = () => {
 
   return (
     <div>
-         <button
-        onClick={() => {
+         <button onClick={() => {
           setUser(null);
           setToken(null);
           localStorage.clear();
-        }}
-      >
-        Logout
-      </button>
+        }}>Logout</button>
       {movie.map((movie) => (
         <MovieCard
           key={movie._id}
