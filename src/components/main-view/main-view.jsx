@@ -1,30 +1,58 @@
-import { useState, useEffect } from 'react';
-import { MovieCard } from "../movie-card/movie-card.jsx";
-import { MovieView } from "../movie-view/movie-view.jsx";
+import { useState, useEffect } from "react";
+import { MovieCard } from "../movie-card/movie-card";
+import { MovieView } from "../movie-view/movie-view";
 import { LoginView } from "../login-view/login-view";
 import { SignupView } from "../signup-view/signup-view";
 
-
 export const MainView = () => {
-    const [movies, setMovies] = useState([]);
-    const [selectedMovie, setSelectedMovie] = useState(null);
-    const [user, setUser] = useState(null);
+  const storedToken = localStorage.getItem("token");
+  const storedUser = JSON.parse(localStorage.getItem("user"));
+  const [movie, setMovie] = useState([]);
+  const [selectedMovie, setSelectedMovie] = useState(null);
+  const [user, setUser] = useState(storedUser? storedUser : null);
+  const [token, setToken] = useState(storedToken? storedToken : null);
 
   useEffect(() => {
-    fetch('https://notflix1717-51672d8e0ed0.herokuapp.com/movies')
+    if (!token) return;
+  
+    fetch("https://notflix1717-51672d8e0ed0.herokuapp.com/movies", {
+      headers: { Authorization: `Bearer ${token}` }
+})
       .then((response) => response.json())
       .then((data) => {
-        console.log(data);
-        setMovies(data);
-        
-      }).catch(e => console.log(e));
-  }, []);
+        console.log("movies from api:", data)
+        const moviesFromApi = data.map((movie) => {
+          return {
+            _id: movie._id,
+            title: movie.title,
+            director: {
+              name: movie.director.name,
+              bio: movie.director.bio,
+              birth: movie.director.birth
+            },
+            description: movie.description,
+            genre: {
+            name: movie.genre.name,
+            description: movie.genre.description
+            },
+            imageUrl: movie.imageUrl,
+            featured: movie.featured
+          };
+        });
+        setMovie(moviesFromApi);
+      })
+
+      .catch((error) => {
+        console.error("Error fetching movies:", error);
+      });
+  }, [token]);
 
   if (!user) {
     return (
       <>
-        <LoginView onLoggedIn={(user) => {
+        <LoginView onLoggedIn={(user, token) => {
           setUser(user);
+          setToken(token);
         }} />
         or
         <SignupView />
@@ -32,34 +60,39 @@ export const MainView = () => {
     );
   }
 
-    if (selectedMovie) {
-        return (
-            <MovieView movie={selectedMovie} onBackClick={() => setSelectedMovie(null)} />
-        ); 
-    }
-console.log(movies);
-    if (movies.length === 0) {
-        return <div>This list is empty!</div>;
-    }
-
+  if (selectedMovie) {
     return (
-        <div>
-            {movies.map((movie) => (
-                <MovieCard
-                    key={movie._id}
-                    movie={movie}
-                    onMovieClick={(newSelectedMovie) => {
-                        setSelectedMovie(newSelectedMovie);
-                    }}
-                />
-            ))
-            }
-        </div>
+      <MovieView movie={selectedMovie} onBackClick={() => setSelectedMovie(null)} />
     );
+  }
+
+  if (movie.length === 0) {
+    return <div>The list is empty!</div>;
+  }
+
+  return (
+    <div>
+         <button
+        onClick={() => {
+          setUser(null);
+          setToken(null);
+          localStorage.clear();
+        }}
+      >
+        Logout
+      </button>
+      {movie.map((movie) => (
+        <MovieCard
+          key={movie._id}
+          movie={movie}
+          onMovieClick={(newSelectedMovie) => {
+            setSelectedMovie(newSelectedMovie);
+          }}
+        />
+      ))}
+    </div>
+  );
 };
-
-<button onClick={() => { setUser(null); }}>Logout</button>
-
 
    /* const [movies, setMovies] = useState([
         {
@@ -87,3 +120,5 @@ console.log(movies);
             genre: "Comedy"
         },
     ]);  */
+
+    // https://notflix1717-51672d8e0ed0.herokuapp.com/movies

@@ -1,29 +1,46 @@
 import { useState } from "react";
-import PropTypes from "prop-types";
 
-export const LoginView = ({ onLoggedIn }) => {
+export const SignupView = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
+  const [email, setEmail] = useState("");
+  const [birthday, setBirthday] = useState("");
 
   const handleSubmit = (event) => {
     event.preventDefault();
 
     const data = {
-      access: username,
-      secret: password
+      username: username,
+      password: password,
+      email: email,
+      birthday: birthday
     };
 
-    fetch("https://notflix1717-51672d8e0ed0.herokuapp.com/login-view.json", {
+    fetch("https://notflix1717-51672d8e0ed0.herokuapp.com/users", {
       method: "POST",
-      body: JSON.stringify(data)
-    }).then((response) => {
-      if (response.ok) {
-        onLoggedIn(username);
-      } else {
-        alert("Login failed");
+      body: JSON.stringify(data),
+      headers: {
+        "Content-Type": "application/json"
       }
+    })
+    .then((response) => {
+      if (response.ok) {
+        alert("Signup successful");
+        window.location.reload();
+      } else {
+        return response.json(); 
+      }
+    })
+    .then((data) => {
+      if (data) {
+        console.error("Signup failed:", data); 
+        alert("Signup failed once again");
+      }
+    })
+    .catch((error) => {
+      console.error("An error occurred:", error);
     });
-  };
+  }
 
   return (
     <form onSubmit={handleSubmit}>
@@ -33,7 +50,8 @@ export const LoginView = ({ onLoggedIn }) => {
           type="text"
           value={username}
           onChange={(e) => setUsername(e.target.value)}
-        required
+          required
+          minLength="3"
         />
       </label>
       <label>
@@ -42,7 +60,25 @@ export const LoginView = ({ onLoggedIn }) => {
           type="password"
           value={password}
           onChange={(e) => setPassword(e.target.value)}
-        required
+          required
+        />
+      </label>
+      <label>
+        Email:
+        <input
+          type="email"
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
+          required
+        />
+      </label>
+      <label>
+        Birthday:
+        <input
+          type="date"
+          value={birthday}
+          onChange={(e) => setBirthday(e.target.value)}
+          required
         />
       </label>
       <button type="submit">Submit</button>
@@ -50,6 +86,4 @@ export const LoginView = ({ onLoggedIn }) => {
   );
 };
 
-LoginView.propTypes = {
-  onLoggedIn: PropTypes.func.isRequired,
-};
+/*  https://notflix1717-51672d8e0ed0.herokuapp.com/login-view.json  */
