@@ -10,7 +10,7 @@ import Col from 'react-bootstrap/Col';
 export const MainView = () => {
   const storedToken = localStorage.getItem("token");
   const storedUser = JSON.parse(localStorage.getItem("user"));
-  const [movies, setMovies] = useState([]); 
+  const [movies, setMovies] = useState([]);
   const [selectedMovie, setSelectedMovie] = useState(null);
   const [user, setUser] = useState(storedUser ? storedUser : null);
   const [token, setToken] = useState(storedToken ? storedToken : null);
@@ -39,66 +39,81 @@ export const MainView = () => {
           ImageUrl: movie.ImageUrl,
           Featured: movie.Featured
         }));
-        setMovies(moviesFromApi); 
+        setMovies(moviesFromApi);
       })
       .catch((error) => {
         console.error("Error fetching movies:", error);
       });
   }, [token]);
 
-  if (!user) {
-    return (
-      <Row className="justify-content-md-center">
-        {!user ? (
-          <>
-            <LoginView
-              onLoggedIn={(user, token) => {
-                setUser(user);
-                setToken(token);
-              }}
-            />
-            <SignupView />
-          </>
-        ) : null}
-      </Row>
-    );
-  }
+  return (
+    <Row className="justify-content-md-center">
+      {!user ? (
+        <>
+          <LoginView
+            onLoggedIn={(user, token) => {
+              setUser(user);
+              setToken(token);
+            }}
+          />
+          <SignupView />
+        </>
+      ) : selectedMovie ? (
+        <MovieView
+          movie={selectedMovie}
+          onBackClick={() => setSelectedMovie(null)}
+        />
+      ) : movies.length === 0 ? (
+        <div>The list is empty!</div>
+      ) : (
+        <>
+          {movies.map((movie) => (
+            <Col className="mb-5" key={movie.id} md={3}>
+              <MovieCard
+                key={movie._id}
+                movie={movie}
+                onMovieClick={(newSelectedMovie) => {
+                  setSelectedMovie(newSelectedMovie);
+                }}
+              />
+            </Col>
+          ))}
+        </>
+      )}
+    </Row>
+  );
+} 
 
-  if (selectedMovie) {
-    return (
-      <Col md={8} className="application">
+/* if (selectedMovie) {
+  return (
+    <Col md={8} className="application">
       <MovieView
         movie={selectedMovie}
         onBackClick={() => setSelectedMovie(null)}
       />
-      </Col>
-    );
-  }
-
-  if (movies.length === 0) {
-    return <div>The list is empty!</div>;
-  }
-
-  return (
-    <div>
-      {movies.map((movie) => (
-        <MovieCard
-          key={movie._id}
-          movie={movie}
-          onMovieClick={(newSelectedMovie) => {
-            setSelectedMovie(newSelectedMovie);
-          }}
-        />
-      ))}
-      <button
-        onClick={() => {
-          setUser(null);
-          setToken(null);
-          localStorage.clear();
-        }}
-      >
-        Logout
-      </button>
-    </div>
+    </Col>
   );
-};
+}
+
+return (
+  <div>
+    {movies.map((movie) => (
+      <MovieCard
+        key={movie._id}
+        movie={movie}
+        onMovieClick={(newSelectedMovie) => {
+          setSelectedMovie(newSelectedMovie);
+        }}
+      />
+    ))}
+    <button
+      onClick={() => {
+        setUser(null);
+        setToken(null);
+        localStorage.clear();
+      }}>
+      Logout
+    </button>
+  </div>
+);
+}; */
