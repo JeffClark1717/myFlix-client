@@ -1,45 +1,49 @@
 import PropTypes from "prop-types"
+import "./movie-view.scss";
 export const MovieView = ({ movie, onBackClick }) => {
     return (
       <div>
         <div>
           {' '}
-          <img src={movie.image} />
+          <img src={movie.ImagePath} />
         </div>
         <div>
           <div>
             <span>Title: </span>
-            <span>{movie.title}</span>
+            <span>{movie.Title}</span>
           </div>
           <div>
             <span>Genre: </span>
-            <span>{movie.genre.name}</span>
+            <span>{movie.Genre.Name}</span>
           </div>
           <div>
             <span>Description: </span>
-            <span>{movie.description}</span>
+            <span>{movie.Description}</span>
           </div>
           <div>
             <span>Director: </span>
-            <span>{movie.director.name}</span>
+            <span>{movie.Director.Name}</span>
           </div>
-          <button onClick={onBackClick}>Back</button>
         </div>
-      </div>
+        <button onClick={onBackClick} className="back-button"  style={{ cursor: "pointer" }}>
+        Back
+      </button>
+    </div>
     );
   };
 
+
 MovieView.propTypes = {
   movie: PropTypes.shape({
-    description: PropTypes.string,
-    director: PropTypes.shape({
-      name: PropTypes.any
+    Description: PropTypes.string,
+    Director: PropTypes.shape({
+      Name: PropTypes.any
     }),
-    genre: PropTypes.shape({
-      name: PropTypes.any
+    Genre: PropTypes.shape({
+      Name: PropTypes.any
     }),
-    image: PropTypes.any,
-    title: PropTypes.any
+    ImagePath: PropTypes.any,
+    Title: PropTypes.any
   }),
   onBackClick: PropTypes.func
 }
