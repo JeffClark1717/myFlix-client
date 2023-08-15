@@ -16,11 +16,7 @@ export const MainView = () => {
   const [user, setUser] = useState(storedUser ? storedUser : null);
   const [token, setToken] = useState(storedToken ? storedToken : null);
 
-<<<<<<< HEAD
-  useEffect(() => { 
-=======
   useEffect(() => {
->>>>>>> 57ce5ba7e07508492c3960966156b2fc4bc06a83
     if (!token) return;
 
     fetch("https://notflix1717-51672d8e0ed0.herokuapp.com/movies", {
