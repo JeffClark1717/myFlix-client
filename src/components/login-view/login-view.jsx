@@ -19,31 +19,29 @@ export const LoginView = ({ onLoggedIn }) => {
       Password: password,
     };
 
-    fetch("https://notflix1717-51672d8e0ed0.herokuapp.com/login", {
+    fetch("https://notflix1717-51672d8e0ed0.herokuapp.com/login" + new URLSearchParams(data), {
       method: "POST",
       body: JSON.stringify(data),
       headers: {
         "Content-Type": "application/json"
       }
     })
-    .then((response) => {
-      if (response.ok) {
-        return response.json();
-        
-      } else {
-        alert ("login failed");
-      }
-    })
-    .then((data) => {
-      if (data) {
-        console.log(data)
-        onLoggedIn (data.user.Username, data.token)
-      }
-    })
-    .catch((error) => {
-      console.error("An error occurred:", error);
-    });
-  }
+    .then((response) => response.json())
+        .then((data) => {
+            console.log("Login response: ", data);
+            if (data.user) {
+                localStorage.setItem("user", JSON.stringify(data.user));
+                localStorage.setItem("token", data.token);
+                onLoggedIn(data.user, data.token);
+            } else {
+                alert("No such user found.");
+            }
+        })
+        .catch((e) => {
+            alert("Something went wrong");
+        });
+    };
+
 
   return (
     <Form onSubmit={handleSubmit}>
