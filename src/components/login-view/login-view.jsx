@@ -19,7 +19,7 @@ export const LoginView = ({ onLoggedIn }) => {
       Password: password,
     };
 
-    fetch("https://notflix1717-51672d8e0ed0.herokuapp.com/login" + new URLSearchParams(data), {
+    fetch("https://notflix1717-51672d8e0ed0.herokuapp.com/login",{
       method: "POST",
       body: JSON.stringify(data),
       headers: {

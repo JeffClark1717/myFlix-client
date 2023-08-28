@@ -1,6 +1,6 @@
 import { createRoot } from 'react-dom/client';
 import { MainView } from './components/main-view/main-view.jsx';
-import { Container } from 'react-bootstrap/Container';
+import  Container  from 'react-bootstrap/Container';
 import './index.scss';
 
 // eslint-disable-next-line react-refresh/only-export-components

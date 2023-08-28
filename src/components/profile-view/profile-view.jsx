@@ -15,7 +15,7 @@ export const ProfileView = ({ user, token, setUser, movies, onLogout }) => {
     const [birthday, setBirthday] = useState(user.BirthDate);
     const [showModal, setShowModal] = useState(false);
     const favoriteMovies = movies.filter((movie) => {
-        return user.FavouriteMovies.includes(movie.id)
+        return user.FavoriteMovies.includes(movie.id)
     });
 
     const handleShowModal = () => setShowModal(true);
@@ -53,7 +53,7 @@ export const ProfileView = ({ user, token, setUser, movies, onLogout }) => {
     };
 
     const handleDeleteUser = () => {
-        fetch(`https://movie-api-es93.herokuapp.com/users/${user.Username}`, {
+        fetch(`https://notflix1717-51672d8e0ed0.herokuapp.com/users/${user.Username}`, {
             method: "DELETE",
             headers: {
                 Authorization: `Bearer ${token}`
@@ -69,16 +69,16 @@ export const ProfileView = ({ user, token, setUser, movies, onLogout }) => {
 
     return (
         <>
-        <h1 className="text-white">Profile</h1>
+        <h1 className="text-black">Profile</h1>
         <Row>
-            <Col className="text-white">
-                <h3 className="text-white">Your profile details</h3>
+            <Col className="text-black">
+                <h3 className="text-black">Your profile details</h3>
                 <div>Username: {user.Username}</div>
                 <div>Email: {user.Email}</div>
             </Col>
             <Col>
-            <h3 className="text-white">Update your profile information here.</h3>
-            <Form onSubmit={handleSubmit} className="text-white">
+            <h3 className="text-black">Update your profile information here.</h3>
+            <Form onSubmit={handleSubmit} className="text-black">
                 <Form.Group controlId="formUsername">
                     <Form.Label>Username:</Form.Label>
                     <Form.Control
@@ -121,7 +121,7 @@ export const ProfileView = ({ user, token, setUser, movies, onLogout }) => {
             </Form>
             </Col>
         </Row>
-        <Row className="text-white">
+        <Row className="text-black">
             <h3>Favorite movies:</h3>
             {favoriteMovies.map((movie) => (
                 <Col className="mb-5" key={movie.id} md={4}>
@@ -150,13 +150,13 @@ ProfileView.propTypes = {
       Username: PropTypes.string.isRequired,
       Email: PropTypes.string.isRequired,
       BirthDate: PropTypes.string,
-      FavouriteMovies: PropTypes.arrayOf(PropTypes.string).isRequired,
+      FavoriteMovies: PropTypes.arrayOf(PropTypes.string).isRequired,
   }).isRequired,
   token: PropTypes.string.isRequired,
   setUser: PropTypes.func.isRequired,
   movies: PropTypes.arrayOf(
       PropTypes.shape({
-          id: PropTypes.string.isRequired,
+          _id: PropTypes.string.isRequired,
           // Add other movie properties if needed
       })
   ).isRequired,

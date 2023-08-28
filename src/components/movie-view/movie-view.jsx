@@ -7,14 +7,14 @@ import PropTypes from "prop-types";
 
 export const MovieView = ({ movies, user, setUser, token }) => {
     const { movieId } = useParams();
-    const [ isFavourite, setIsFavourite ] = useState(false);
+    const [ isFavorite, setIsFavorite ] = useState(false);
 
     useEffect(() => {
-       const isFavourited = user.FavouriteMovies.includes(movieId)
-       setIsFavourite(isFavourited)
-    }, [movieId, user.FavouriteMovies]);
+       const isFavorited = user.FavoriteMovies.includes(movieId)
+       setIsFavorite(isFavorited)
+    }, [movieId, user.FavoriteMovies]);
 
-    const removeFavourite = () => {
+    const removeFavorite = () => {
         fetch(`https://notflix1717-51672d8e0ed0.herokuapp.com/users/${user.Username}/${movieId}`, {
             method: "DELETE",
             headers: {
@@ -27,15 +27,15 @@ export const MovieView = ({ movies, user, setUser, token }) => {
             }
         }).then((data) => {
             if (data) {
-                setIsFavourite(false);
+                setIsFavorite(false);
                 localStorage.setItem("user", JSON.stringify(data));
                 setUser(data);
             }
         })
     };
 
-    const addToFavourite = () => {
-        fetch(`https://movie-api-es93.herokuapp.com/users/${user.Username}/${movieId}`, {
+    const addToFavorite = () => {
+        fetch(`https://notflix1717-51672d8e0ed0.herokuapp.com/users/${user.Username}/${movieId}`, {
             method: "PUT",
             headers: {
                 "Content-Type": "application/json",
@@ -47,7 +47,7 @@ export const MovieView = ({ movies, user, setUser, token }) => {
             }
         }).then((data) => {
             if (data) {
-                setIsFavourite(true);
+                setIsFavorite(true);
                 localStorage.setItem("user", JSON.stringify(data));
                 setUser(data);
             }
@@ -61,17 +61,17 @@ export const MovieView = ({ movies, user, setUser, token }) => {
             <Card.Img variant="top" src={movie.image}/>
             <Card.Body>
                 <Card.Title>{movie.title}</Card.Title>
-                <Card.Text>Description: {movie.description}</Card.Text>
-                <Card.Text>Director: {movie.director.name}</Card.Text>
-                <Card.Text>Bio: {movie.director.bio}</Card.Text>
-                <Card.Text>Genre: {movie.genre.name}</Card.Text>
-                <Card.Text>Description: {movie.genre.description}</Card.Text>
+                <Card.Text>Description: {movie.Description}</Card.Text>
+                <Card.Text>Director: {movie.Director.Name}</Card.Text>
+                <Card.Text>Bio: {movie.Director.Bio}</Card.Text>
+                <Card.Text>Genre: {movie.Genre.Name}</Card.Text>
+                <Card.Text>Description: {movie.Genre.Description}</Card.Text>
             </Card.Body>
 
-            {isFavourite ? (
-                <Button onClick={removeFavourite}>Remove from favorites</Button>
+            {isFavorite ? (
+                <Button onClick={removeFavorite}>Remove from favorites</Button>
             ) : (
-                <Button onClick={addToFavourite}>Add to favorites</Button>
+                <Button onClick={addToFavorite}>Add to favorites</Button>
             )}
 
             <Link to={"/"}>
@@ -85,22 +85,22 @@ MovieView.propTypes = {
   movies: PropTypes.arrayOf(
   PropTypes.shape({
   id: PropTypes.string.isRequired,
-  image: PropTypes.string.isRequired,
-  title: PropTypes.string.isRequired,
-  description: PropTypes.string,
-  director: PropTypes.shape({
-  name: PropTypes.string.isRequired,
-  bio: PropTypes.string,
+  imagePath: PropTypes.string.isRequired,
+  Title: PropTypes.string.isRequired,
+  Description: PropTypes.string,
+  Director: PropTypes.shape({
+  Name: PropTypes.string.isRequired,
+  Bio: PropTypes.string,
   }).isRequired,
-  genre: PropTypes.shape({
-  name: PropTypes.string.isRequired,
-  description: PropTypes.string,
+  Genre: PropTypes.shape({
+  Name: PropTypes.string.isRequired,
+  Description: PropTypes.string,
   }).isRequired
   })
   ).isRequired,
   user: PropTypes.shape({
   Username: PropTypes.string.isRequired,
-  FavouriteMovies: PropTypes.arrayOf(PropTypes.string).isRequired
+  FavoriteMovies: PropTypes.arrayOf(PropTypes.string).isRequired
   }).isRequired,
   setUser: PropTypes.func.isRequired,
   token: PropTypes.string.isRequired
