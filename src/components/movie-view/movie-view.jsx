@@ -4,18 +4,21 @@ import { Card } from "react-bootstrap";
 import { useParams } from "react-router";
 import { Link } from "react-router-dom";
 import PropTypes from "prop-types";
+import "./movie-view.scss";
 
 export const MovieView = ({ movies, user, setUser, token }) => {
-    const { movieId } = useParams();
+    const { movieTitle } = useParams();
     const [ isFavorite, setIsFavorite ] = useState(false);
 
+    const movie = movies.find((m) => m.Title === movieTitle);
+
     useEffect(() => {
-       const isFavorited = user.FavoriteMovies.includes(movieId)
+       const isFavorited = user.FavoriteMovies.includes(movie._id)
        setIsFavorite(isFavorited)
-    }, [movieId, user.FavoriteMovies]);
+    }, [movie._id, user.FavoriteMovies]);
 
     const removeFavorite = () => {
-        fetch(`https://notflix1717-51672d8e0ed0.herokuapp.com/users/${user.Username}/${movieId}`, {
+        fetch(`https://notflix1717-51672d8e0ed0.herokuapp.com/users/${user.Username}/movies/${movie._id}`, {
             method: "DELETE",
             headers: {
                 "Content-Type": "application/json",
@@ -35,8 +38,8 @@ export const MovieView = ({ movies, user, setUser, token }) => {
     };
 
     const addToFavorite = () => {
-        fetch(`https://notflix1717-51672d8e0ed0.herokuapp.com/users/${user.Username}/${movieId}`, {
-            method: "PUT",
+        fetch(`https://notflix1717-51672d8e0ed0.herokuapp.com/users/${user.Username}/movies/${movie._id}`, {
+            method: "POST",
             headers: {
                 "Content-Type": "application/json",
                 Authorization: `Bearer ${token}`,
@@ -53,8 +56,6 @@ export const MovieView = ({ movies, user, setUser, token }) => {
             }
         })
     }
-
-    const movie = movies.find((m) => m.id === movieId);
 
     return (
         <Card className="mt-1 mb-1 h-100 bg-secondary text-white" >
@@ -84,16 +85,16 @@ export const MovieView = ({ movies, user, setUser, token }) => {
 MovieView.propTypes = {
   movies: PropTypes.arrayOf(
   PropTypes.shape({
-  id: PropTypes.string.isRequired,
-  imagePath: PropTypes.string.isRequired,
-  Title: PropTypes.string.isRequired,
+  id: PropTypes.string,
+  imagePath: PropTypes.string,
+  Title: PropTypes.string,
   Description: PropTypes.string,
   Director: PropTypes.shape({
-  Name: PropTypes.string.isRequired,
+  Name: PropTypes.string,
   Bio: PropTypes.string,
   }).isRequired,
   Genre: PropTypes.shape({
-  Name: PropTypes.string.isRequired,
+  Name: PropTypes.string,
   Description: PropTypes.string,
   }).isRequired
   })

@@ -1,4 +1,4 @@
-//import Button from "react-bootstrap";
+
 import Container from "react-bootstrap/Container";
 import Nav from "react-bootstrap/Nav";
 import Navbar from "react-bootstrap/Navbar";
@@ -10,7 +10,7 @@ export const NavigationBar = ({ user, onLoggedOut }) => {
         <Navbar bg="dark" variant="dark" expand="lg" sticky="top">
             <Container>
                 <Navbar.Brand as={Link} to="/" >
-                    MyFlixApp
+                    Notflix
                 </Navbar.Brand>
                 <Navbar.Toggle aria-controls="basic-navabar-nav" />
                 <Navbar.Collapse id="basic-navbar-nav">

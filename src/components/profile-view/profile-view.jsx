@@ -6,7 +6,6 @@ import Form from "react-bootstrap/Form";
 import Row from "react-bootstrap/Row";
 import Modal from "react-bootstrap/Modal";
 import { MovieCard } from "../movie-card/movie-card";
-// import { ModalHeader } from "react-bootstrap";
 
 export const ProfileView = ({ user, token, setUser, movies, onLogout }) => {
     const [username, setUsername] = useState(user.Username);
@@ -15,7 +14,7 @@ export const ProfileView = ({ user, token, setUser, movies, onLogout }) => {
     const [birthday, setBirthday] = useState(user.BirthDate);
     const [showModal, setShowModal] = useState(false);
     const favoriteMovies = movies.filter((movie) => {
-        return user.FavoriteMovies.includes(movie.id)
+        return user.FavoriteMovies.includes(movie._id)
     });
 
     const handleShowModal = () => setShowModal(true);
@@ -151,14 +150,13 @@ ProfileView.propTypes = {
       Email: PropTypes.string.isRequired,
       BirthDate: PropTypes.string,
       FavoriteMovies: PropTypes.arrayOf(PropTypes.string).isRequired,
-  }).isRequired,
-  token: PropTypes.string.isRequired,
+  }),
+  token: PropTypes.string,
   setUser: PropTypes.func.isRequired,
   movies: PropTypes.arrayOf(
       PropTypes.shape({
-          _id: PropTypes.string.isRequired,
-          // Add other movie properties if needed
+          _id: PropTypes.string,
       })
   ).isRequired,
-  onLogout: PropTypes.func.isRequired,
+  onLogout: PropTypes.func,
 };
