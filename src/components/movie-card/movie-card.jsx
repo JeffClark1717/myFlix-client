@@ -6,8 +6,8 @@ import { Link } from "react-router-dom";
 export const MovieCard = ({ movie }) => {
   return (
       <Card className="h-100 bg-secondary text-white">
-          <Card.Img variant="top" src={movie.ImagePath} />
           <Card.Body>
+              <Card.Img variant="top" src={movie.ImagePath} />
               <Card.Title>{movie.Title}</Card.Title>
               <Card.Text>Director: {movie.Director.Name}</Card.Text>
               <Card.Text>Description: {movie.Description}</Card.Text>
@@ -19,8 +19,7 @@ export const MovieCard = ({ movie }) => {
           </Card.Body>
       </Card>
   );
-};
-
+}
 
 MovieCard.propTypes = {
   movie: PropTypes.shape({
@@ -38,3 +37,4 @@ MovieCard.propTypes = {
 };
 
 export default MovieCard; 
+

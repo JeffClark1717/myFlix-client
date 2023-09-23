@@ -116,7 +116,7 @@ export const ProfileView = ({ user, token, setUser, movies, onLogout }) => {
                         required
                     />
                 </Form.Group>
-                <Button variant="primary" type="submit">Save changes</Button>
+                <Button variant="primary" onClick={handleSubmit} type="submit">Save changes</Button>
             </Form>
             </Col>
         </Row>
