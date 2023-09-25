@@ -127,6 +127,7 @@ export const MainView = () => {
                         <form>
                           <InputGroup>
                             <Form.Control
+                              value = {Search}
                               onChange={(e) => setSearch(e.target.value)}
                               placeholder="Search Movie Titles"
                               aria-label="Search Movie Titles"
