@@ -8,10 +8,10 @@ import Modal from "react-bootstrap/Modal";
 import { MovieCard } from "../movie-card/movie-card";
 
 export const ProfileView = ({ user, token, setUser, movies, onLogout }) => {
-    const [username, setUsername] = useState(user.Username);
+    const [username, setUsername] = useState(user.Username || "");
     const [password, setPassword] = useState("");
-    const [email, setEmail] = useState(user.Email);
-    const [birthday, setBirthday] = useState(user.BirthDate);
+    const [email, setEmail] = useState(user.Email || "");
+    const [birthday, setBirthday] = useState(user.BirthDay || "");
     const [showModal, setShowModal] = useState(false);
     const favoriteMovies = movies.filter((movie) => {
         return user.FavoriteMovies.includes(movie._id)
@@ -47,6 +47,7 @@ export const ProfileView = ({ user, token, setUser, movies, onLogout }) => {
             if (data) {
                 localStorage.setItem("user", JSON.stringify(data));
                 setUser(data);
+                alert("Profile updated successfully.")
             }
         })
     };
@@ -123,7 +124,7 @@ export const ProfileView = ({ user, token, setUser, movies, onLogout }) => {
         <Row className="text-black">
             <h3>Favorite movies:</h3>
             {favoriteMovies.map((movie) => (
-                <Col className="mb-5" key={movie.id} md={4}>
+                <Col className="mb-5" key={movie._id} md={4}>
                     <MovieCard movie={movie}></MovieCard>
                 </Col>
             ))}
@@ -148,7 +149,7 @@ ProfileView.propTypes = {
   user: PropTypes.shape({
       Username: PropTypes.string.isRequired,
       Email: PropTypes.string.isRequired,
-      BirthDate: PropTypes.string,
+      BirthDay: PropTypes.string,
       FavoriteMovies: PropTypes.arrayOf(PropTypes.string).isRequired,
   }),
   token: PropTypes.string,

@@ -37,7 +37,7 @@ export const MainView = () => {
           Director: {
             Name: movie.Director.Name,
             Bio: movie.Director.Bio,
-            Birthday: movie.Director.Birthdate
+            Birthday: movie.Director.Birthday
           },
           Description: movie.Description,
           Genre: {
@@ -76,6 +76,7 @@ export const MainView = () => {
               </>
             }
           />
+
           <Route path="/login"
             element={
               <>
@@ -92,6 +93,7 @@ export const MainView = () => {
               </>
             }
           />
+
           <Route path="/movies/:movieTitle"
             element={
               <>
@@ -109,6 +111,7 @@ export const MainView = () => {
               </>
             }
           />
+
           <Route
             path="/"
             element={
@@ -124,6 +127,7 @@ export const MainView = () => {
                         <form>
                           <InputGroup>
                             <Form.Control
+                              value = {Search}
                               onChange={(e) => setSearch(e.target.value)}
                               placeholder="Search Movie Titles"
                               aria-label="Search Movie Titles"
@@ -136,9 +140,7 @@ export const MainView = () => {
                           movie :
                           movie.Title.toLowerCase().includes(Search.toLowerCase());
                       }
-
                       ).map((movie) => (
-
                         <Col className="mb-4" key={movie._id} md={3}>
                           <MovieCard
                             movie={movie}
@@ -146,13 +148,8 @@ export const MainView = () => {
                             user={user}
                             setUser={setUser}
                           />
-
                         </Col>
-
                       ))}
-
-
-
                     </>
                   )
                 }
@@ -179,13 +176,13 @@ export const MainView = () => {
           setUser(null);
           setToken(null);
           localStorage.clear();
-        }}
-                    />
+        }}  />
               </Col>
             )}
           </>
         }
         />
+
          <Route
             path="/watch-list"
             element={
@@ -197,7 +194,6 @@ export const MainView = () => {
                     <Col> The List is Empty!</Col>
                   ) : (
                     <>
-
                       {movies.filter((movie) => user.FavoriteMovies.includes(movie._id)).map((movie) => (
                         <Col className="mb-4" key={movie._id} md={3}>
                           <MovieCard
@@ -214,6 +210,7 @@ export const MainView = () => {
             }
 
           />
+
           <Route
             path="/users/:username"
             element={
